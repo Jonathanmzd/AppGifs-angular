@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -12,6 +13,9 @@ export class GifsService {
     return [...this._historial];
   }
 
+  constructor (private http:HttpClient){}
+
+
   buscarGifs(query:string = ''){
 
     query = query.trim().toLocaleLowerCase();
@@ -21,6 +25,12 @@ export class GifsService {
       this._historial = this._historial.splice(0,10);
     }
 
-    console.log(this._historial);
+    // llamado de la api desde un observable
+    this.http.get('https://api.giphy.com/v1/gifs/search?api_key=5XgIGRbM12WAqj5iMQIkoOkERlrRm0UF&q=dragon&limit=10')
+    .subscribe((resp:any) => {
+      console.log(resp);
+    })
+
+   
   }
 }
