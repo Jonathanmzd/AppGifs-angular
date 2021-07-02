@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
 
@@ -6,8 +6,9 @@ import { SearchGifsResponse, Gif } from '../interface/gifs.interface';
   providedIn: 'root',
 })
 export class GifsService {
-  private apiKey: string = '5XgIGRbM12WAqj5iMQIkoOkERlrRm0UF';
-  private _historial: string[] = [];
+  private apiKey     : string = '5XgIGRbM12WAqj5iMQIkoOkERlrRm0UF';
+  private servicioUrl: string = 'https://api.giphy.com/v1/gifs';
+  private _historial : string[] = [];
 
   // Esto se encuentra en la interface de Gifs para realizar una interface desde el json lo hacemos desde https://app.quicktype.io/
   public resultados: Gif[] = [];
@@ -36,10 +37,18 @@ export class GifsService {
       localStorage.setItem('historial', JSON.stringify(this._historial));
     }
 
+    // objeto de angular para los params
+    const params = new HttpParams()
+    .set('api_key', this.apiKey)
+    .set('limit', '10')
+    .set('q', query);
+
+    console.log(params.toString());
+
     // llamado de la api desde un Observable
     this.http
       .get<SearchGifsResponse>(
-        `https://api.giphy.com/v1/gifs/search?api_key=5XgIGRbM12WAqj5iMQIkoOkERlrRm0UF&q=${query}&limit=10`
+        `${this.servicioUrl}/search`,{params}
       )
       .subscribe((resp) => {
         console.log(resp.data);
