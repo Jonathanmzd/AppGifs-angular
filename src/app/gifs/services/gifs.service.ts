@@ -43,7 +43,7 @@ export class GifsService {
     .set('limit', '10')
     .set('q', query);
 
-    console.log(params.toString());
+    // console.log(params.toString());
 
     // llamado de la api desde un Observable
     this.http
@@ -51,7 +51,7 @@ export class GifsService {
         `${this.servicioUrl}/search`,{params}
       )
       .subscribe((resp) => {
-        console.log(resp.data);
+        // console.log(resp.data);
         this.resultados = resp.data;
         localStorage.setItem('resultados', JSON.stringify(this.resultados))
       });
